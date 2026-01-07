@@ -1,8 +1,8 @@
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
-    // 싱글톤 패턴
+    // 싱글톤
     public static GameManager Instance;
 
     [Header("Player Data")]
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
         currentExp = currentExp - maxExp; // 남은 경험치는 다음 레벨로 이월
         maxExp *= 1.2f; // 다음 레벨 필요 경험치 % 증가
 
-        Debug.Log($"[GameManager] 레벨 업! 현재 레벨: {playerLevel}");
+        Debug.Log($"[GameManager] 레벨 업 현재 레벨: {playerLevel}");
 
     }
 
@@ -77,4 +77,17 @@ public class GameManager : MonoBehaviour
     {
         sharpEyesStat++;
     }
+
+    public void ChangeScene(string sceneName)
+    {
+        PrevSceneName = SceneManager.GetActiveScene().name;
+
+        Debug.Log($"[GameManager] {PrevSceneName} 에서 {sceneName} 로 이동.");
+
+        SceneManager.LoadScene(sceneName);
+    }
+
+
+    // 외부 읽기용
+    public string PrevSceneName { get; private set; } = "";
 }
