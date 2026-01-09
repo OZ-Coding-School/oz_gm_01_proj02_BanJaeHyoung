@@ -77,6 +77,7 @@ public class DeckManager : MonoBehaviour
 
     public void PrepareDeck()
     {
+        // 3판후 리셋
         RoundCount++;
 
         bool needReset = (RoundCount > 1 && (RoundCount - 1) % 3 == 0);
@@ -85,15 +86,11 @@ public class DeckManager : MonoBehaviour
         {
             if (needReset)
             {
-                ResetDeck(); // 3판후 리셋
+                ResetDeck();
             }
 
             // 1라운드이거나 리셋 직후에는 셔플
             Shuffle();
-        }
-        else
-        {
-            Debug.Log("기존 덱 사용");
         }
     }
 
@@ -110,7 +107,6 @@ public class DeckManager : MonoBehaviour
             MyDeck[rnd] = temp;
         }
 
-        Debug.Log("[DeckManager] 카드를 섞었습니다");
     }
 
     // 카드 한 장 뽑기
@@ -118,7 +114,6 @@ public class DeckManager : MonoBehaviour
     {
         if (MyDeck.Count == 0)
         {
-            Debug.LogError("덱에 카드가 없습니다");
             return null;
         }
 
@@ -128,7 +123,7 @@ public class DeckManager : MonoBehaviour
         return card;
     }
 
-    // 덱 리셋 (재시작용)
+    // 덱 리셋
     public void ResetDeck()
     {
         foreach (Transform child in cardSpawnPos)

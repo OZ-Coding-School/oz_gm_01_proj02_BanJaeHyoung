@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class WorldMapSpawner : MonoBehaviour
 {
-    [Header("참조")]
+    [Header("연결")]
     [SerializeField] private Transform playerTransform;
 
     // 어떤 씬 -> 어디로 보낼지 짝을 지어주는 데이터
@@ -11,7 +11,7 @@ public class WorldMapSpawner : MonoBehaviour
     public struct SpawnData
     {
         public string fromSceneName; // 예: Game_Blackjack
-        public Transform spawnPoint; // 예: Point_Blackjack 오브젝트
+        public Transform spawnPoint; // 예: Point_Blackjack
     }
 
     [Header("스폰 위치 설정")]
@@ -32,7 +32,6 @@ public class WorldMapSpawner : MonoBehaviour
             {
                 // 위치 이동
                 playerTransform.position = data.spawnPoint.position;
-                Debug.Log($"[Spawner] {prevScene}에서 돌아와서 위치를 이동했습니다.");
                 return;
             }
         }
