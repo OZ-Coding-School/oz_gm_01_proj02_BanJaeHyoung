@@ -1,20 +1,39 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.IO;
+
 public class GameManager : MonoBehaviour
 {
     // 싱글톤
     public static GameManager Instance;
 
-    [Header("Player Data")]
-    [SerializeField] private long currentGold = 10000; // 초기 자금
-    [SerializeField] private int playerLevel = 1;
-    [SerializeField] private float currentExp = 0;
-    [SerializeField] private float maxExp = 100;
+    [System.Serializable]
+    public class PlayerData
+    {
+        public long gold = 10000;
+        public int level = 1;
+        public float exp = 0;
+        public float maxExp = 100;
+        public int luck = 0;
+        public int sharpEyes = 0;
+        public string prevSceneName = ""; // 이전 씬 이름 저장
 
-    [Header("Player Stats")]
-    [SerializeField] private int luckStat = 0; // 운
-    [SerializeField] private int sharpEyesStat = 0; // 눈썰미
+        // 초기화 (생성자)
+        public PlayerData()
+        {
+            gold = 10000;
+            level = 1;
+            exp = 0;
+            maxExp = 100;
+            luck = 0;
+            sharpEyes = 0;
+            prevSceneName = "";
+        }
+    }
+
+    [Header("Current Player Data")]
+    public PlayerData currentPlayer;
 
     [Header("Bot")]
     public List<CharacterData> allCharacterPool; // 봇 데이터
@@ -61,6 +80,42 @@ public class GameManager : MonoBehaviour
 
             activeBots.Add(newState);
         }
+    }
+
+    string SavePath => Application.persistentDataPath + "/SaveData.json";
+
+    public void SaveGame()
+    {
+        if (currentPlayer == null) return;
+
+        string json = JsonUtility.ToJson(currentPlayer, true);
+        File.WriteAllText(SavePath, json);
+
+    }
+
+    public void LoadGame()
+    {
+        if (File.Exists(SavePath))
+        {
+            string json = File.ReadAllText(SavePath);
+            currentPlayer = JsonUtility.FromJson<PlayerData>(json);
+        }
+        else
+        {
+            NewGame();
+        }
+    }
+
+    public void NewGame()
+    {
+        currentPlayer = new PlayerData(); // 데이터 초기화
+        SaveGame(); // 덮어쓰기
+    }
+
+    // 데이터 존재 여부 확인 (이어하기 버튼 활성화용)
+    public bool HasSaveData()
+    {
+        return File.Exists(SavePath);
     }
 
     // 봇 셔플 로직
@@ -131,61 +186,75 @@ public class GameManager : MonoBehaviour
         return candidates[randomIndex];
     }
 
+    // 파산한 봇 리셋
+    public void ReviveBot(BotState bot)
+    {
+        bot.currentMoney = bot.data.initialMoney; // 초기 자금 복구
+        bot.isBankrupt = false; // 파산 딱지 떼기
+    }
+
     // 골드 확인
     public long GetGold()
     {
-        return currentGold;
+        if (currentPlayer == null) return 0;
+        return currentPlayer.gold;
     }
 
     // 골드 추가/사용
     public void ChangeGold(long amount)
     {
-        currentGold += amount;
+        if (currentPlayer == null) return;
 
-        // 골드 0보다 떨어지지 않게
-        if (currentGold < 0) currentGold = 0;
+        currentPlayer.gold += amount;
+        if (currentPlayer.gold < 0) currentPlayer.gold = 0; // 0보다 떨어지지 않게
 
-
+        SaveGame();
     }
 
     public void AddExp(float amount)
     {
-        currentExp += amount;
+        if (currentPlayer == null) return;
+
+        currentPlayer.exp += amount;
         // 레벨업
-        if (currentExp >= maxExp)
+        if (currentPlayer.exp >= currentPlayer.maxExp)
         {
             LevelUp();
         }
+        SaveGame();
     }
 
     private void LevelUp()
     {
-        playerLevel++;
-        currentExp = currentExp - maxExp; // 남은 경험치는 다음 레벨로 이월
-        maxExp *= 1.2f; // 다음 레벨 필요 경험치 % 증가
-
-
+        currentPlayer.level++;
+        currentPlayer.exp = currentPlayer.exp - currentPlayer.maxExp; // 이월
+        currentPlayer.maxExp *= 1.2f; // 필요 경험치 증가
     }
-
 
     public void UpgradeLuck()
     {
-        luckStat++;
+        if (currentPlayer != null) currentPlayer.luck++;
+        SaveGame();
     }
 
     public void UpgradeSharpEyes()
     {
-        sharpEyesStat++;
+        if (currentPlayer != null) currentPlayer.sharpEyes++;
+        SaveGame();
     }
 
     public void ChangeScene(string sceneName)
     {
-        PrevSceneName = SceneManager.GetActiveScene().name;
-
-
+        if (currentPlayer != null)
+        {
+            currentPlayer.prevSceneName = SceneManager.GetActiveScene().name;
+            SaveGame(); // 씬 이동 전 저장
+        }
         SceneManager.LoadScene(sceneName);
     }
 
-    // 외부 읽기용
-    public string PrevSceneName { get; private set; } = "";
+    public string PrevSceneName
+    {
+        get { return currentPlayer != null ? currentPlayer.prevSceneName : ""; }
+    }
 }

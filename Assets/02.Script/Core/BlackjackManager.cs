@@ -42,6 +42,9 @@ public class BlackjackManager : MonoBehaviour
     [SerializeField] private GameObject bettingPanel; // 판넬
     [SerializeField] private TextMeshProUGUI txtCurrentBet; // 현재 배팅액
 
+    [Header("게임 오버 UI")]
+    [SerializeField] private GameObject gameOverPanel;
+
     // 내부 변수
     private int currentStartPlayerIndex = 0; // 누가 먼저 받나?
 
@@ -86,7 +89,15 @@ public class BlackjackManager : MonoBehaviour
 
                     if (newBot != null)
                     {
+                        GameManager.Instance.ReviveBot(currentTableBots[i]); // 쫒겨나는 놈 리셋
+
                         currentTableBots[i] = newBot; // 봇 교체
+                    }
+
+                    else
+                    {
+                        // 버그로인한 모든 봇 파산상태시 즉시 리셋
+                        GameManager.Instance.ReviveBot(currentTableBots[i]);
                     }
                 }
             }
@@ -106,6 +117,14 @@ public class BlackjackManager : MonoBehaviour
 
     public void OpenBettingPhase()
     {
+        // 수정 부분. 삭제 하려다가 혹시 모를 버그를 대비
+        if (GameManager.Instance.GetGold() <= 0)
+        {
+            if (gameOverPanel != null) gameOverPanel.SetActive(true); // 게임 오버 창 켜기
+            if (bettingPanel != null) bettingPanel.SetActive(false);  // 배팅 창 끄기
+            return; // 함수 종료
+        }
+
         SetupTable();
         // 테이블 청소
         foreach (Transform seat in playerSeats) ClearHand(seat);
@@ -309,6 +328,17 @@ public class BlackjackManager : MonoBehaviour
                 // 결과 텍스트 & 내 돈 UI 갱신
                 txtResult.text = resultMsg;
                 seatUIs[2].moneyText.text = $"${GameManager.Instance.GetGold()}";
+
+                if (GameManager.Instance.GetGold() <= 0)
+                {
+                    if (gameOverPanel != null) gameOverPanel.SetActive(true); // 게임 오버 창 켜기
+                    btnNextRound.SetActive(false); // 라운드 버튼은 숨김
+                }
+                else
+                {
+                    // 살아있을 때만 라운드 버튼 노출
+                    btnNextRound.SetActive(true);
+                }
             }
             // 봇 (0, 1, 3번 자리)
             else
@@ -352,9 +382,6 @@ public class BlackjackManager : MonoBehaviour
                 UpdateSeatUI(i, bot.data.characterName, bot.currentMoney, bot.data.portrait);
             }
         }
-
-        // 다음 라운드 버튼 활성화
-        btnNextRound.SetActive(true);
     }
 
     private void UpdateSeatUI(int index, string name, long money, Sprite face)
@@ -578,6 +605,15 @@ public class BlackjackManager : MonoBehaviour
 
     public void OnClickNextRound()
     {
+        OpenBettingPhase();
+    }
+
+    public void OnClickRetry()
+    {
+        GameManager.Instance.ChangeGold(10000); // 임시
+
+        // 게임 오버 창 끄고 배팅 화면 열기
+        if (gameOverPanel != null) gameOverPanel.SetActive(false);
         OpenBettingPhase();
     }
 }
