@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &531412040396284154
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1429063708948262327}
+  - component: {fileID: 6180936485307108046}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1429063708948262327
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531412040396284154}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1057.0063, y: 539.8786, z: -7.177744}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6180936485307108046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531412040396284154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ff8097fba1cfa741a5c3bf08551fe22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentPlayer:
+    gold: 10000
+    level: 1
+    exp: 0
+    maxExp: 100
+    luck: 0
+    sharpEyes: 0
+    prevSceneName: 
+  allCharacterPool:
+  - {fileID: 11400000, guid: c848ab768c0b12f44830762a4eb2c063, type: 2}
+  - {fileID: 11400000, guid: 05f240e01b3d41644a3d8f3894864e64, type: 2}
+  - {fileID: 11400000, guid: e7a86c980e74a9a45a42f166a5b04294, type: 2}
+  - {fileID: 11400000, guid: 23a0eaaa777682d419bfefb42b8c89ed, type: 2}
+  - {fileID: 11400000, guid: 2374948d5abc2fa42a4dd6a764662e6e, type: 2}
+  - {fileID: 11400000, guid: 8ae63ce84ba838043b7f304ec7186745, type: 2}
+  - {fileID: 11400000, guid: 1f88c8fbde49ab448aac9fbc1564888c, type: 2}
+  activeBots: []

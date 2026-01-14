@@ -131,7 +131,7 @@ TextureImporter:
         width: 13
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -139,6 +139,27 @@ TextureImporter:
       bones: []
       spriteID: 0d9c712dee7b2c34b8730e2f42de5e0c
       internalID: -982843731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIpackSheet_transparent_1
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 469
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c412036b9ffef904c8703c078ace87e6
+      internalID: 993639457
       vertices: []
       indices: 
       edges: []
@@ -155,6 +176,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       UIpackSheet_transparent_0: -982843731
+      UIpackSheet_transparent_1: 993639457
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
