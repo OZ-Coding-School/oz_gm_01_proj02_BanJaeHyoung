@@ -24,6 +24,14 @@ public class PlayerController : MonoBehaviour
         if (joyStick == null) joyStick = FindObjectOfType<VirtualJoystick>();
     }
 
+    void Start()
+    {
+        if (joyStick == null)
+        {
+            joyStick = FindObjectOfType<VirtualJoystick>();
+        }
+    }
+
     void Update()
     {
         // 키보드 입력 대각선 이동 시 속도가 2배가 되지 않도록 normalized 처리

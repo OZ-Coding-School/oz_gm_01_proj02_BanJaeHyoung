@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BlackjackManager : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class BlackjackManager : MonoBehaviour
     [Header("SeatUi 연결")]
     public List<SeatUI> seatUIs; // 4개의 자리 UI를 여기에 연결
 
+    [Header("캐릭터 이미지 리스트")]
+    public Sprite[] myCharacterFaces; // 0번, 1번 캐릭터 얼굴 그림
+
     [Header("참가자 카드 위치")]
     [SerializeField] private List<Transform> playerSeats; // Bot1, Bot2, Player, Bot3
 
@@ -35,6 +39,7 @@ public class BlackjackManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private Button btnHit;
     [SerializeField] private Button btnStand;
+    [SerializeField] private Button btnExit;
     [SerializeField] private TextMeshProUGUI txtResult;
     [SerializeField] private GameObject btnNextRound;
 
@@ -66,7 +71,30 @@ public class BlackjackManager : MonoBehaviour
         txtResult.text = "";
         SetButtonsActive(false);
 
+        UpdateMyInfo();
+
         OpenBettingPhase();
+    }
+
+    private void UpdateMyInfo()
+    {
+        if (GameManager.Instance == null) return;
+
+        // 내 자리 UI가 연결되어 있다면 갱신
+        if (seatUIs != null && seatUIs.Count > 2)
+        {
+            // 이름 변경
+            seatUIs[2].nameText.text = GameManager.Instance.myName;
+
+            // 얼굴 변경
+            if (myCharacterFaces != null && myCharacterFaces.Length > 0 && seatUIs[2].faceImage != null)
+            {
+                int charIndex = GameManager.Instance.myCharIndex;
+                if (charIndex < 0 || charIndex >= myCharacterFaces.Length) charIndex = 0;
+
+                seatUIs[2].faceImage.sprite = myCharacterFaces[charIndex];
+            }
+        }
     }
 
     private void SetupTable()
@@ -109,7 +137,7 @@ public class BlackjackManager : MonoBehaviour
         UpdateSeatUI(1, currentTableBots[1].data.characterName, currentTableBots[1].currentMoney, currentTableBots[1].data.portrait);
 
         // 내 정보는 GameManager에서 직접 가져옴
-        UpdateSeatUI(2, "Player", GameManager.Instance.GetGold(), null);
+        UpdateSeatUI(2, GameManager.Instance.myName, GameManager.Instance.GetGold(), null);
 
         // Bot 3 (좌석 인덱스 3)
         UpdateSeatUI(3, currentTableBots[2].data.characterName, currentTableBots[2].currentMoney, currentTableBots[2].data.portrait);
@@ -117,7 +145,6 @@ public class BlackjackManager : MonoBehaviour
 
     public void OpenBettingPhase()
     {
-        // 수정 부분. 삭제 하려다가 혹시 모를 버그를 대비
         if (GameManager.Instance.GetGold() <= 0)
         {
             if (gameOverPanel != null) gameOverPanel.SetActive(true); // 게임 오버 창 켜기
@@ -142,10 +169,13 @@ public class BlackjackManager : MonoBehaviour
 
         // 패널 켜기
         if (bettingPanel != null) bettingPanel.SetActive(true);
+        if (btnExit != null) btnExit.interactable = true; // 나가기 버튼 활성
     }
 
     public void StartGame()
     {
+        if (btnExit != null) btnExit.interactable = false; // 시작 시 나가기못함
+
         seatScores = new int[playerSeats.Count];
 
         // 점수 초기화
@@ -615,5 +645,13 @@ public class BlackjackManager : MonoBehaviour
         // 게임 오버 창 끄고 배팅 화면 열기
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         OpenBettingPhase();
+    }
+    public void OnClickExit()
+    {
+        // 월드맵 이동
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ChangeScene("WorldMap");
+        }
     }
 }

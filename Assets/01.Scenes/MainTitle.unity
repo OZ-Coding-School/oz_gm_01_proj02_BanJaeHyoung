@@ -587,7 +587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   btnContinue: {fileID: 967693012}
   settingsPanel: {fileID: 1164239564}
-  gameSceneName: WorldMap
+  gameSceneName: CharacterSelect
 --- !u!4 &551812464
 Transform:
   m_ObjectHideFlags: 0

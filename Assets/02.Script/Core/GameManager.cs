@@ -35,6 +35,10 @@ public class GameManager : MonoBehaviour
     [Header("Current Player Data")]
     public PlayerData currentPlayer;
 
+    [Header("플레이어 정보")]
+    public int myCharIndex = 0;
+    public string myName = "Player";
+
     [Header("Bot")]
     public List<CharacterData> allCharacterPool; // 봇 데이터
 

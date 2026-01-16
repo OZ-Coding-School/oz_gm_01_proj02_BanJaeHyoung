@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class WorldMapSpawner : MonoBehaviour
 {
-    [Header("연결")]
-    [SerializeField] private Transform playerTransform;
+    [Header("캐릭터 프리팹")]
+    public GameObject[] charPrefabs;
 
     // 어떤 씬 -> 어디로 보낼지 짝을 지어주는 데이터
     [System.Serializable]
@@ -19,6 +19,8 @@ public class WorldMapSpawner : MonoBehaviour
 
     private void Start()
     {
+        GameObject myPlayer = CreatePlayer();
+
         // 게임 매니저가 없으면 무시
         if (GameManager.Instance == null) return;
 
@@ -31,9 +33,23 @@ public class WorldMapSpawner : MonoBehaviour
             if (data.fromSceneName == prevScene)
             {
                 // 위치 이동
-                playerTransform.position = data.spawnPoint.position;
+                myPlayer.transform.position = data.spawnPoint.position;
                 return;
             }
         }
+    }
+    GameObject CreatePlayer()
+    {
+        int index = 0;
+        // 게임매니저에서 가져옴
+        if (GameManager.Instance != null)
+        {
+            index = GameManager.Instance.myCharIndex;
+        }
+
+        // 안전장치
+        if (index < 0 || index >= charPrefabs.Length) index = 0;
+
+        return Instantiate(charPrefabs[index], transform.position, Quaternion.identity);
     }
 }
