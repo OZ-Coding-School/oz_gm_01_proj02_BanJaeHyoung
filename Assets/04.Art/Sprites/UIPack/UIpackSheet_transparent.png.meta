@@ -152,7 +152,7 @@ TextureImporter:
         width: 14
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -160,6 +160,69 @@ TextureImporter:
       bones: []
       spriteID: c412036b9ffef904c8703c078ace87e6
       internalID: 993639457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIpackSheet_transparent_2
+      rect:
+        serializedVersion: 2
+        x: 490
+        y: 146
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea58ec30daad28c4c95fb72e878a0bd9
+      internalID: -813782721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIpackSheet_transparent_3
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 163
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6bb2cae1e1070de439ac9c6ed3b2c6bb
+      internalID: -2125967318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UIpackSheet_transparent_4
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 163
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4fcd5d54640a1f943a60851bf4265f05
+      internalID: 1032501386
       vertices: []
       indices: 
       edges: []
@@ -177,6 +240,9 @@ TextureImporter:
     nameFileIdTable:
       UIpackSheet_transparent_0: -982843731
       UIpackSheet_transparent_1: 993639457
+      UIpackSheet_transparent_2: -813782721
+      UIpackSheet_transparent_3: -2125967318
+      UIpackSheet_transparent_4: 1032501386
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -15,8 +15,12 @@ public class GameManager : MonoBehaviour
         public int level = 1;
         public float exp = 0;
         public float maxExp = 100;
-        public int luck = 0;
-        public int sharpEyes = 0;
+
+        public int luck = 0; // 행운 (각종 행운 작용)
+        public int sharpEyes = 0; // 눈썰미 (히든능력)
+        public int business = 0; // 수완 (얻는 골드, 잃는 골드 조정)
+        public int insight = 0; // 통찰 (얻는 경험치 증가)
+
         public string prevSceneName = ""; // 이전 씬 이름 저장
 
         // 초기화 (생성자)
@@ -26,8 +30,12 @@ public class GameManager : MonoBehaviour
             level = 1;
             exp = 0;
             maxExp = 100;
+
             luck = 0;
             sharpEyes = 0;
+            business = 0;
+            insight = 0;
+
             prevSceneName = "";
         }
     }
@@ -245,6 +253,24 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer != null) currentPlayer.sharpEyes++;
         SaveGame();
+    }
+
+    public void UpgradeBusiness()
+    {
+        if (currentPlayer != null)
+        {
+            currentPlayer.business++;
+            SaveGame();
+        }
+    }
+
+    public void UpgradeInsight()
+    {
+        if (currentPlayer != null)
+        {
+            currentPlayer.insight++;
+            SaveGame();
+        }
     }
 
     public void ChangeScene(string sceneName)
